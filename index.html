@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>O Tech Shop</title>
+  <style>
+    * { box-sizing: border-box; }
+    html { scroll-padding-top: 1rem; }
+    body {
+      margin: 0;
+      background: #fff;
+      color: #202b38;
+      font-family: system-ui, sans-serif;
+      line-height: 1.6;
+    }
+    header, main { width: min(100% - 2rem, 64rem); margin-inline: auto; }
+    header { padding-block: 2rem 1rem; border-bottom: 2px solid #dce7f3; }
+    h1, h2, h3 { line-height: 1.25; }
+    h1, h2 { color: #124f91; }
+    nav ul { display: flex; flex-wrap: wrap; gap: .5rem 1rem; padding: 0; list-style: none; }
+    a { color: #124f91; text-underline-offset: .2em; }
+    nav a { display: inline-block; padding: .5rem; }
+    a:hover { text-decoration-thickness: .15em; }
+    a:focus-visible { outline: 3px solid #124f91; outline-offset: 4px; border-radius: 2px; }
+    section { padding-block: 1.5rem; }
+    article { padding: clamp(1rem, 4vw, 2rem); border: 1px solid #b8cce0; border-radius: .5rem; }
+    dt { font-weight: 700; }
+    dd { margin: 0 0 .75rem; }
+    p { max-width: 65ch; }
+  </style>
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>O Tech Shop</h1>
+    <nav aria-label="Main navigation">
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#shop">Shop</a></li>
+        <li><a href="#cart">Cart (<span id="cart-count">0</span>)</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section id="home" aria-labelledby="home-heading">
+      <h2 id="home-heading">Home</h2>
+      <p>Welcome to O Tech Shop, your shop for computer accessories that complement your workspace.</p>
+    </section>
+    <section id="shop" aria-labelledby="shop-heading">
+      <h2 id="shop-heading">Shop</h2>
+      <article aria-labelledby="product-heading">
+        <h3 id="product-heading">Apple Magic Keyboard with Touch ID (USB-C)</h3>
+        <p>A wireless, rechargeable keyboard with Touch ID for compatible Macs with Apple silicon.</p>
+        <dl>
+          <dt>Price</dt>
+          <dd>$149.00 USD</dd>
+          <dt>Category</dt>
+          <dd>Computer Accessories</dd>
+          <dt>Availability</dt>
+          <dd>In Stock</dd>
+        </dl>
+      </article>
+    </section>
+    <section id="cart" aria-labelledby="cart-heading">
+      <h2 id="cart-heading">Cart</h2>
+      <p>Your cart is empty.</p>
+    </section>
+  </main>
+</body>
+</html>
