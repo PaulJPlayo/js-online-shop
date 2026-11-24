@@ -1,33 +1,7 @@
-const products = [
-  {
-    productName: "Apple Magic Keyboard with Touch ID (USB-C)",
-    price: 149.00,
-    category: "Computer Accessories",
-    inStock: true
-  },
-  {
-    productName: "Wireless Mouse",
-    price: 29.99,
-    category: "Computer Accessories",
-    inStock: true
-  },
-  {
-    productName: "USB-C Hub",
-    price: 49.99,
-    category: "Computer Accessories",
-    inStock: false
-  },
-  {
-    productName: "Portable SSD",
-    price: 89.99,
-    category: "Storage",
-    inStock: true
-  }
-];
+import { addToCart, OutOfStockError, ProductNotFoundError } from "./cart.js";
+import { products } from "./products.js";
 
-const cart = [];
-
-console.log("Products:", products);
+const errorMessage = document.getElementById("error-message");
 
 function renderProducts(productsToDisplay) {
   const productGrid = document.getElementById("product-grid");
@@ -45,50 +19,29 @@ function renderProducts(productsToDisplay) {
     price.textContent = `$${product.price.toFixed(2)}`;
     addButton.type = "button";
     addButton.textContent = "Add to Cart";
-    addButton.addEventListener("click", () => addToCart(product.productName));
+    addButton.addEventListener("click", () => {
+      addButton.disabled = true;
+
+      try {
+        const cartCount = addToCart(product.productName);
+        document.getElementById("cart-count").textContent = String(cartCount);
+        errorMessage.textContent = "";
+      } catch (error) {
+        if (error instanceof OutOfStockError) {
+          errorMessage.textContent = "This item is out of stock.";
+        } else if (error instanceof ProductNotFoundError) {
+          errorMessage.textContent = "We couldn't find this item.";
+        } else {
+          errorMessage.textContent = "We couldn't add this item. Please try again.";
+        }
+      } finally {
+        addButton.disabled = false;
+      }
+    });
 
     card.append(name, category, price, addButton);
     productGrid.append(card);
   }
-}
-
-function addToCart(productName) {
-  const product = products.find((item) => item.productName === productName);
-
-  if (!product) {
-    console.log(`Product not found: ${productName}`);
-    return;
-  }
-
-  if (!product.inStock) {
-    console.log(`Product out of stock: ${productName}`);
-    return;
-  }
-
-  cart.push(product);
-  document.getElementById("cart-count").textContent = String(cart.length);
-  console.log(`Added to cart: ${product.productName}`);
-}
-
-function viewCart() {
-  let total = 0;
-
-  for (const item of cart) {
-    console.log(`${item.productName}: $${item.price.toFixed(2)}`);
-    total += item.price;
-  }
-
-  console.log(`Total: $${total.toFixed(2)}`);
-}
-
-function filterByCategory(category) {
-  const matchingProducts = products.filter((product) => product.category === category);
-
-  matchingProducts.forEach((product) => {
-    console.log(`${product.productName}: $${product.price.toFixed(2)}`);
-  });
-
-  return matchingProducts;
 }
 
 function renderCategoryFilters() {
@@ -106,7 +59,7 @@ function renderCategoryFilters() {
     categoryButton.type = "button";
     categoryButton.textContent = category;
     categoryButton.addEventListener("click", () => {
-      renderProducts(filterByCategory(category));
+      renderProducts(products.filter((product) => product.category === category));
     });
     categoryFilters.append(categoryButton);
   }
